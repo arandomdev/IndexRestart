@@ -18,3 +18,8 @@ cable.
 * The firmware implements a simple serial server. When it receives the trigger
 command, it power cycles the headset. The python script sends the trigger command
 and then launches SteamVR.
+
+* Configuration
+Use the "listDevices.py" script to view the available com ports and their associated
+hardware IDs. Then create a "config.json" file in the project directory with a "hwid"
+key and the hwid string.

@@ -1,9 +1,11 @@
 import enum
+import json
+import pathlib
+import time
 import webbrowser
 
 import serial.tools.list_ports
 
-HWID = "USB VID:PID=2341:8036 SER=6&28CF390B&0&9"
 BAUD_RATE = 9600
 PACKET_SIZE = 1
 
@@ -15,9 +17,12 @@ class Command(enum.Enum):
 
 
 def main() -> None:
+    config = json.loads(pathlib.Path(__file__).with_name("config.json").read_text())
+    hwid = config["hwid"]
+
     # Get port name
     ports = serial.tools.list_ports.comports()
-    target = next((p for p in ports if p.hwid == HWID), None)
+    target = next((p for p in ports if p.hwid == hwid), None)
     if target is None:
         raise RuntimeError("Unable to find device with hardware ID")
 
@@ -27,6 +32,8 @@ def main() -> None:
         packet = ser.read(PACKET_SIZE)
         if Command(packet) != Command.ACK:
             raise RuntimeError("Did not get a ACK response")
+
+    time.sleep(1)
 
     # Open SteamVR
     webbrowser.open("steam://rungameid/250820")
