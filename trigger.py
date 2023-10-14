@@ -33,7 +33,7 @@ def main() -> None:
         if Command(packet) != Command.ACK:
             raise RuntimeError("Did not get a ACK response")
 
-    time.sleep(3)
+    time.sleep(5)
 
     # Open SteamVR
     webbrowser.open("steam://rungameid/250820")
